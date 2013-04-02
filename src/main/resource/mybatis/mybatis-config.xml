@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+    <!--mybatis配置文件各属性的配置是必须按照顺序来的-->
+
+    <properties resource="jdbc/jdbc.properties">
+        <!--可以再这里添加一些属性-->
+        <!--<property name="username" value="dev_user"/>-->
+        <!--<property name="password" value="F2Fa3!33TYyg"/>-->
+    </properties>
+    <typeAliases>
+        <typeAlias type="per.liu.pojo.User" alias="User"/>
+        <typeAlias type="per.liu.pojo.UserRole" alias="UserRole"/>
+        <typeAlias type="per.liu.pojo.RescRole" alias="RescRole"/>
+
+        <!--<package name="per.liu.pojo"/>-->
+    </typeAliases>
+    <environments default="development">
+        <environment id="development">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="${driver}"/>
+                <property name="url" value="${url}"/>
+                <property name="username" value="${username}"/>
+                <property name="password" value="${password}"/>
+            </dataSource>
+        </environment>
+    </environments>
+    <mappers>
+        <mapper resource="mybatis/sqlmap/UserMapper.xml"/>
+        <mapper resource="mybatis/sqlmap/UserMapperS.xml"/>
+        <!--<package name="org.mybatis.builder"/>-->
+    </mappers>
+
+</configuration>

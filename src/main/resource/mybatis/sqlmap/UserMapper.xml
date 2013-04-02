@@ -1,0 +1,61 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="per.liu.mapper.UserMapper">
+    <!--默认不开启缓存，开启缓存后，对select进行缓存，缓存会被映射文件的增删改刷新-->
+    <!--<cache/>
+     可用的收回策略有:
+    LRU – 最近最少使用的:移除最长时间不被使用的对象。
+    FIFO – 先进先出:按对象进入缓存的顺序来移除它们。
+    SOFT – 软引用:移除基于垃圾回收器状态和软引用规则的对象。
+    WEAK – 弱引用:更积极地移除基于垃圾收集器状态和弱引用规则的对象。
+默认的是 LRU。-->
+    <!--    默认情况下,语句可以这样来配置:
+  <select ... flushCache="false" useCache="true"/>
+  <insert ... flushCache="true"/>
+  <update ... flushCache="true"/>
+  <delete ... flushCache="true"/>-->
+    <!--
+    可以用于多个mapper文件之间的共享一个缓存策略
+    <cache-ref namespace="com.someone.application.data.SomeMapper"/>-->
+    <cache
+            eviction="FIFO"
+            flushInterval="60000"
+            size="512"
+            readOnly="true"/>
+    <!--sql重用-->
+    <sql id="userColumns"> id,username,password,status,descn </sql>
+    <resultMap type="User" id="usermap">
+        <id column="id" property="id"/>
+        <result column="username" property="username"/>
+        <result column="password" property="password"/>
+        <result column="status" property="status"/>
+        <!--<result column="descn" property="descn"/>
+         有没有这行都一样，因为mybatis默认开始了auto-mapping，
+         对非嵌套的映射，自动映射简单字段，同时它是忽略大小写、对特殊符号如‘_’进行处理了的-->
+    </resultMap>
+
+    <!--lang="raw"的作用是告诉mybatis，下面的sql直接运行，交给driver即可，明显它的运行速度比另一种‘xml’要快一些-->
+    <select id="getUsers" resultMap="usermap" lang="raw">
+        select      id,username,password,status,descn
+        from user
+    </select>
+    <select id="getUsersByRef" resultMap="usermap" lang="raw">
+        select
+        <include refid="userColumns"/>
+        from user
+    </select>
+
+    <!--useGeneratedKeys 	( 仅 对 insert 有 用 ) 这 会 告 诉 MyBatis 使 用 JDBC 的 getGeneratedKeys 方法来取出由数据(比如:像 MySQL 和 SQL Server 这样的数据库管理系统的自动递增字段)内部生成的主键。 默认值:false。
+    keyProperty 	(仅对 insert 有用) 标记一个属性, MyBatis 会通过 getGeneratedKeys 或者通过 insert 语句的 selectKey 子元素设置它的值。 默认: 不设置。
+    如未设置，id不会返回mysql生成的自增长id
+    statementType默认为PREPARED，即使用PreparedStatement语法-->
+    <insert id="insert" parameterType="User" useGeneratedKeys="true" keyProperty="id">
+	    insert into user (id, username, password, status,descn) values (
+	    	#{id}, #{username}, #{password}, #{status}, #{descn}
+	    )
+	</insert>
+
+    <!--还有一些高级映射，UserMapperS.xml是例子-->
+</mapper>
