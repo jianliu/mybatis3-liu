@@ -19,11 +19,13 @@
     <!--
     可以用于多个mapper文件之间的共享一个缓存策略
     <cache-ref namespace="com.someone.application.data.SomeMapper"/>-->
-    <cache
-            eviction="FIFO"
-            flushInterval="60000"
-            size="512"
-            readOnly="true"/>
+    <!--<cache-->
+    <!--eviction="LRU"-->
+    <!--flushInterval="60000"-->
+    <!--size="51200"-->
+    <!--readOnly="true"/>-->
+    <!--<cache type="org.mybatis.caches.ehcache.EhcacheCache"/>-->
+    <cache/>
     <!--sql重用-->
     <sql id="userColumns"> id,username,password,status,descn </sql>
     <resultMap type="User" id="usermap">

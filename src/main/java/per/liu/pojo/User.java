@@ -1,5 +1,6 @@
 package per.liu.pojo;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -8,7 +9,7 @@ import java.util.List;
  * Date: 13-4-2
  * Time: 下午2:34
  */
-public class User {
+public class User implements Serializable {
 
     private Long id;
     private String username;

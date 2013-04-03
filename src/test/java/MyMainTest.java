@@ -98,7 +98,7 @@ public class MyMainTest {
         try {
             User user = new User();
             user.setDescn("come from mybatis-ORM");
-            user.setUsername("liu-test7");
+            user.setUsername("liu-test8");
             user.setPassword("the pass");
 //             user.setStatus(1);
             sqlSession.insert("per.liu.mapper.UserMapper.insert", user);
@@ -118,13 +118,66 @@ public class MyMainTest {
         setSqlSession();
         try {
 //             List<User> user = sqlSession.selectList("per.liu.mapper.UserMapper.selectOne", 1);
+            sqlSession.getConfiguration();
             List<User> users = sqlSession.selectList("per.liu.mapper.UserMapperS.selectAllUser", 1);
             System.out.println(1);
-
+//            setSqlSession();
+            List<User> users2 = sqlSession.selectList("per.liu.mapper.UserMapperS.selectAllUser", 1);
+            List<User> users3 = sqlSession.selectList("per.liu.mapper.UserMapperS.selectAllUser", 10057);
         } finally {
             sqlSession.close();
         }
         System.out.println();
     }
 
+    private void testItemEHCache() throws IOException {
+        setSqlSession();
+        try {
+//             List<User> user = sqlSession.selectList("per.liu.mapper.UserMapper.selectOne", 1);
+            sqlSession.getConfiguration();
+            List<User> users = sqlSession.selectList("per.liu.mapper.UserMapperS.selectAllUser", 1);
+            System.out.println(1);
+            List<User> users2 = sqlSession.selectList("per.liu.mapper.UserMapperS.selectAllUser", 1);
+            List<User> users3 = sqlSession.selectList("per.liu.mapper.UserMapperS.selectAllUser", 10057);
+        } finally {
+            sqlSession.close();
+        }
+        System.out.println();
+    }
+
+    @Test
+    public void testEHCache() throws IOException {
+//            <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>使查询被缓存起来，不同session访问时仍然有效
+        testItemEHCache();
+        testItemEHCache();
+    }
+
+    @Test
+    public void testDefaultCache() throws IOException {
+        /**
+         *     <cache
+            eviction="LRU"
+            flushInterval="60000"
+            size="512"
+            readOnly="true"/> 没有使不同session间访问数据时被缓存   默认缓存是坑爹的
+         */
+//            <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>使查询被缓存起来，不同session访问时仍然有效
+
+        testItemDefaultCache();
+        testItemDefaultCache();
+    }
+
+    private void testItemDefaultCache() throws IOException {
+        setSqlSession();
+        try {
+//             List<User> user = sqlSession.selectList("per.liu.mapper.UserMapper.selectOne", 1);
+            sqlSession.getConfiguration();
+            List<User> users = sqlSession.selectList("per.liu.mapper.UserMapper.getUsers");
+            System.out.println(1);
+            List<User> users2 = sqlSession.selectList("per.liu.mapper.UserMapper.getUsers");
+            List<User> users3 = sqlSession.selectList("per.liu.mapper.UserMapper.getUsers");
+        } finally {
+            sqlSession.close();
+        }
+    }
 }

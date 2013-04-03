@@ -2,6 +2,8 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="per.liu.mapper.UserMapperS">
+    <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>
+    <!--<cache type="org.mybatis.caches.ehcache.LoggingEhcache"/>-->
     <resultMap id="userWithAll" type="User">
         <id column="id" property="id"/>
         <association property="userRole" column="id" javaType="UserRole" select="selectUserRole"/>
@@ -45,14 +47,14 @@
     <!--动态查询，比较简单，网上摘录-->
 
     <!--<select id="findActiveBlogLike"-->
-            <!--parameterType="Blog" resultType="Blog">-->
-        <!--SELECT * FROM BLOG WHERE state ='ACTIVE'-->
-        <!--<if test="title != null">-->
-            <!--AND title like #{title}-->
-        <!--</if>-->
-        <!--<if test="author != null and author.name != null">-->
-            <!--AND author_name like #{author.name}-->
-        <!--</if>-->
+    <!--parameterType="Blog" resultType="Blog">-->
+    <!--SELECT * FROM BLOG WHERE state ='ACTIVE'-->
+    <!--<if test="title != null">-->
+    <!--AND title like #{title}-->
+    <!--</if>-->
+    <!--<if test="author != null and author.name != null">-->
+    <!--AND author_name like #{author.name}-->
+    <!--</if>-->
     <!--</select>-->
 
 </mapper>
